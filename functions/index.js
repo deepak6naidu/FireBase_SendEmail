@@ -107,16 +107,18 @@ exports.SendWelcomeEmail = functions.https.onCall((data) => {
 
   var EmailID1 = db.ref("user-posts/"+data.uid+"/emailid");
   var Author1 = db.ref("user-posts/"+data.uid+"/author");
+  var emailId1 ='';
+  var author1 ='';
     // Attach an asynchronous callback to read the data at our posts reference
     EmailID1.on("value", function(snapshot) {
-      var emailId1 = snapshot.val();
-      console.log(snapshot.val());
+      emailId1 = snapshot.val();
+      console.log(emailId1);
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     });
     Author1.on("value", function(snapshot) {
-      var author1 = snapshot.val();
-      console.log(snapshot.val());
+      author1 = snapshot.val();
+      console.log(author1);
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     });
