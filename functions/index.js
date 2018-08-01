@@ -96,3 +96,18 @@ function sendGoodbyeEmail(email, displayName) {
     return console.log('Account deletion confirmation email sent to:', email);
   });
 }
+
+
+exports.SendWelcomeEmail = functions.https.onCall((data) => {
+  const Email = data.UserEmail;
+  const DisplayName = data.UserName;
+  sendWelcomeEmail(Email,DisplayName);
+ });
+ 
+ exports.TestRemotCall = functions.https.onCall((data) => {
+   const Texts = data.UserEmail;
+   const Texts2 = data.UserName;
+   console.log(Texts);
+   console.log(Texts2);
+  });
+  
