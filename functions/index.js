@@ -17,9 +17,10 @@
 
 const functions = require('firebase-functions');
 const nodemailer = require('nodemailer');
-const admin = require('firebase-admin');
+var admin = require('firebase-admin');
 
 admin.initializeApp(functions.config().firebase);
+var db = admin.database();
 
 // Configure the email transport using the default SMTP transport and a GMail account.
 // For Gmail, enable these:
@@ -103,17 +104,38 @@ function sendGoodbyeEmail(email, displayName) {
 
 
 exports.SendWelcomeEmail = functions.https.onCall((data) => {
-  const Email = data.UserEmail;
-  const DisplayName = data.UserName;
-  sendWelcomeEmail(Email,DisplayName);
+
+  var EmailID1 = db.ref("user-posts/"+data.uid+"/emailid");
+  var Author1 = db.ref("user-posts/"+data.uid+"/author");
+    // Attach an asynchronous callback to read the data at our posts reference
+    EmailID1.on("value", function(snapshot) {
+      var emailId1 = snapshot.val();
+      console.log(snapshot.val());
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
+    Author1.on("value", function(snapshot) {
+      var author1 = snapshot.val();
+      console.log(snapshot.val());
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
+
+    sendWelcomeEmail(emailId1,author1);
  });
  
  exports.TestRemotCall = functions.https.onCall((data) => {
-   
-  const Texts = admin.database().ref('user-posts/' + data.uid +'/').once('Author');
-  const Texts2 = admin.database().ref('user-posts/' + data.uid +'/').once('emailid');
+  // const Email = data.UserEmail;
+  // const DisplayName = data.UserName;
+  // sendWelcomeEmail(Email,DisplayName);
+  //  const mytable = Masters.child('user-posts');
+  //  const Texts = mytable.child(data.uid);
+  // const Texts = mytable.orderByChild('uid').equalTo(data.uid).child('author');
+  // const Texts2 = mytable.child(data.uid).child('emailid');
+  // var Texts3 = admin.database().ref('user-posts/' + data.uid);
 
-   console.log('User Name: '+Texts);
-   console.log('EmailID: '+Texts2);
+  //  console.log('User Name: '+Texts);
+  //  console.log('EmailID: '+Texts2);
+  //  console.log('EmailID22: '+Texts3);
   });
   
