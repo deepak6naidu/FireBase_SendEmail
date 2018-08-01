@@ -17,6 +17,10 @@
 
 const functions = require('firebase-functions');
 const nodemailer = require('nodemailer');
+const admin = require('firebase-admin');
+
+admin.initializeApp(functions.config().firebase);
+
 // Configure the email transport using the default SMTP transport and a GMail account.
 // For Gmail, enable these:
 // 1. https://www.google.com/settings/security/lesssecureapps
@@ -105,9 +109,11 @@ exports.SendWelcomeEmail = functions.https.onCall((data) => {
  });
  
  exports.TestRemotCall = functions.https.onCall((data) => {
-   const Texts = data.UserEmail;
-   const Texts2 = data.UserName;
-   console.log(Texts);
-   console.log(Texts2);
+   
+  const Texts = admin.database().ref('user-posts/' + data.uid +'/').once('Author');
+  const Texts2 = admin.database().ref('user-posts/' + data.uid +'/').once('emailid');
+
+   console.log('User Name: '+Texts);
+   console.log('EmailID: '+Texts2);
   });
   
