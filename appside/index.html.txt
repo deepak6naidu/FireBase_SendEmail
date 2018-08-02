@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <label>Name:  </label>
+    <textarea id="name">Enter Your Name</textarea>
+    <br />
+    <label>Email ID:  </label>
+    <textarea id="email">Enter EmailId</textarea>
+    <br />
+    <button onclick="SendEmail()">Send Email</button>
+
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyASeQyf69KbhVuKZ-cT7BZPpM7rrWOFGdw",
+            authDomain: "onboardingapp-hack.firebaseapp.com",
+            databaseURL: "https://onboardingapp-hack.firebaseio.com",
+            projectId: "onboardingapp-hack",
+            storageBucket: "onboardingapp-hack.appspot.com",
+            messagingSenderId: "906274637345"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script src="Scripts/index.js"></script>
+</body>
+
+</html>
+
+
+
+************************************************************** .JS file ******************************
+
+// Initialize Cloud Functions through Firebase
+//var functions = firebase.functions();
+var emailId = 'nagarajhackoverflow@gmail.com';
+var userName = 'Deepak Naidu';   
+var userID = 1;
+
+function SendEmail() {
+    var addMessage = firebase.functions().httpsCallable('SendWelcomeEmail');
+    addMessage({ uid: userID }).then(function (result) {
+        // Read result of the Cloud Function.
+        // .
+    });
+}
